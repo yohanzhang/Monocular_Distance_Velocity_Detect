@@ -352,7 +352,7 @@ def detect(opt):
                         color=compute_color_for_labels(id)
                         center=(int((output[0]+output[2])/2),int((output[1]+output[3])/2))
                         pts[id].append(center)
-
+                        # YOLO标记点是框底部中点
                         center_bottom=(int(output[0]+abs(output[2]-output[0])/2),int(output[1]+abs(output[3]-output[1])))
 
                         kuang = [cls, (output[0]+output[2])/2, (output[1]+output[3])/2, abs(output[2]-output[0]), abs(output[3]-output[1])]
@@ -361,7 +361,7 @@ def detect(opt):
                         if d[0]>0:
                             print('d',d)
                             distance_temp.append([id,d[0]])
-
+                        #用于处理前一帧未正常识别出距离的异常情况
                         pre_distance=-999
                         if len(distance_list)>0 and pre_frame!=-999:
                             #print(distance_list)
@@ -396,7 +396,7 @@ def detect(opt):
                             with open(txt_path + '.txt', 'a') as f:
                                 f.write(('%g ' * 10 + '\n') % (frame_idx + 1, id, bbox_left,  # MOT format
                                                                bbox_top, bbox_w, bbox_h, -1, -1, -1, i))
-
+                        #输出到csv的内容保存，注意更改代码里的文件保存位置
                         if save_csv:
                             storage.append([name_str, frame_idx+1, id, names[int(cls)], output[0], output[1], distance, d[0], d[1], output[2] - output[0], output[3] - output[1], velocity, ttc])
 
